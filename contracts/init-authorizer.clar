@@ -360,36 +360,3 @@
     )
   )
 )
-
-;; Add a new data type (admin only)
-(define-public (add-data-type 
-                (type-id (string-utf8 30))
-                (name (string-utf8 50))
-                (description (string-utf8 256))
-                (sensitive bool))
-  (if (is-contract-admin)
-    (begin
-      (map-set data-types
-        { type-id: type-id }
-        {
-          name: name,
-          description: description,
-          sensitive: sensitive
-        }
-      )
-      (ok true)
-    )
-    ERR-NOT-AUTHORIZED
-  )
-)
-
-;; Transfer contract administration (admin only)
-(define-public (transfer-admin (new-admin principal))
-  (if (is-contract-admin)
-    (begin
-      (var-set contract-admin new-admin)
-      (ok true)
-    )
-    ERR-NOT-AUTHORIZED
-  )
-)
